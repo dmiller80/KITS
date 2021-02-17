@@ -1,2 +1,3 @@
 # KITS
- Kit Inventory Tracking System Group Repo
+ Hello and welcome to the Kit Inventory Tracking System Group Repo
+ -- Where Kit tracking meets Study Execution
