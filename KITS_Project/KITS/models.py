@@ -45,7 +45,7 @@ class Kit(models.Model):
     description = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
-        return str(self.type_name)
+        return f'{self.IRB_number} ({self.type_name})'
 
 
 class KitInstance(models.Model):
@@ -54,7 +54,7 @@ class KitInstance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           help_text='Unique ID for this particular kit used in any Study')
     scanner_id = models.CharField(max_length=100, default=id)
-    kit_type = models.ForeignKey('Kit', on_delete=models.RESTRICT)
+    kit = models.ForeignKey('Kit', on_delete=models.RESTRICT)
     # Bld/room
     location = models.CharField(max_length=100)
 
@@ -86,4 +86,4 @@ class KitInstance(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'{self.id} ({self.kit_type}) {self.status} {self.expiration_date}'
+        return f'{self.id} ({self.kit}) {self.status} {self.expiration_date}'

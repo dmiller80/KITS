@@ -2,23 +2,23 @@ from django.contrib import admin
 from .models import Study, KitOrder, KitInstance, Kit
 
 
-class KitsInstanceInline(admin.TabularInline):
+class KitInstanceInline(admin.TabularInline):
     model = KitInstance
     extra = 0
 
 @admin.register(Kit)
 class KitList(admin.ModelAdmin):
-    list_display = ('type_name', 'description')
-    search_fields = ('type_name', 'description')
-    ordering = ['type_name']
+    list_display = ('IRB_number', 'type_name', 'description')
+    inlines = [KitInstanceInline]
+
 
 @admin.register(KitInstance)
 class KitInstanceAdmin(admin.ModelAdmin):
-    list_display = ('scanner_id', 'kit_type', 'location', 'expiration_date')
-    list_filter = ('expiration_date', 'kit_type')
+    list_display = ('kit', 'scanner_id', 'location', 'expiration_date')
+    list_filter = ('expiration_date', 'kit')
     fieldsets = (
         (None, {
-            'fields': ('kit_type', 'id')
+            'fields': ('kit', 'id')
         }),
         ('Availability', {
             'fields': ('status', 'expiration_date')
