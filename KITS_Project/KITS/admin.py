@@ -1,20 +1,42 @@
 from django.contrib import admin
-from .models import Study, KitOrder
+from .models import Study, KitOrder, KitInstance, Kit
 
 
+class KitsInstanceInline(admin.TabularInline):
+    model = KitInstance
+    extra = 0
+
+@admin.register(Kit)
+class KitList(admin.ModelAdmin):
+    list_display = ('type_name', 'description')
+    search_fields = ('type_name', 'description')
+    ordering = ['type_name']
+
+@admin.register(KitInstance)
+class KitInstanceAdmin(admin.ModelAdmin):
+    list_display = ('scanner_id', 'kit_type', 'location', 'expiration_date')
+    list_filter = ('expiration_date', 'kit_type')
+    fieldsets = (
+        (None, {
+            'fields': ('kit_type', 'id')
+        }),
+        ('Availability', {
+            'fields': ('status', 'expiration_date')
+        }),
+    )
+
+
+@admin.register(KitOrder)
 class KitOrderList(admin.ModelAdmin):
-    list_display = ( 'type', 'web_address', 'description' )
-    list_filter = ( 'type', 'web_address')
+    list_display = ('type', 'web_address', 'description' )
+    list_filter = ('type', 'web_address')
     search_fields = ('type', )
-    ordering = ['web_address']
+    ordering = ['type']
 
-
+@admin.register(Study)
 class StudyList(admin.ModelAdmin):
-    list_display = ( 'IRB_number', 'pet_name', 'status' )
-    list_filter = ( 'IRB_number', 'start_date')
-    search_fields = ('IRB_number', )
+    list_display = ('IRB_number', 'pet_name', 'status')
+    list_filter = ('IRB_number', 'start_date')
     ordering = ['IRB_number']
 
 
-admin.site.register(Study)
-admin.site.register(KitOrder)
